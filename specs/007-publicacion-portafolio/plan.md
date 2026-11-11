@@ -1,6 +1,6 @@
 # Plan 007 — Publicación y portafolio
 
-Estado: aprobado
+Estado: implementado
 
 
 ## Alcance y supuestos
@@ -672,3 +672,22 @@ Se corrigió con un `pytest.ini` en la raíz que declara `pythonpath = .`, aprob
 - Commit de la corrección: `6867329` (`fix: make pytest resolve the project root`); ejecución `42938428625` verde.
 - Commit del badge: `e611fcb` (`docs: add repository URL and CI badge`); ejecución `42938750426` verde.
 - El workflow emite un aviso no bloqueante de GitHub sobre Node.js 20 en `actions/checkout@v4` y `actions/setup-python@v5`; no afecta al resultado y no se cambian las etiquetas fijadas del plan.
+
+## Verificación de T11 (2026-11-10)
+
+T11 cerrada con la matriz de trazabilidad recorrida fila a fila y la autoevaluación guiada.
+
+| Comprobación | Resultado |
+|---|---|
+| Lint y pruebas | `ruff check .` → All checks passed!; `pytest -q` → 1166 passed, 1 skipped (13,29 s); la omitida es la prueba opcional del modelo real. |
+| Clon limpio | Sin `.env`, `venv/` ni cachés. Instalación inicial 28,9 min; primer `/health` 99,9 s; segunda ejecución 23,8 s; subida 1,46 s; total 26,8 s con dependencias y modelo disponibles. |
+| Sin clave | `/health` 200, subida con 37 fragmentos, `README.md` 400 `invalid_extension`, `/chat` 503 `missing_api_key` y frontend 200. |
+| Docker | Imagen 10.920,74 MiB; `/health` 35,2 s; subida, 400, 503 y frontend correctos; `--network none` 56,8 s; `appuser` UID 10001; sin `docs/`, `specs/`, `tests/`, `.env` ni `.git` dentro. |
+| Publicación | Repo público `mariacamilazapata155-svg/CodeMentor`, rama `main`, licencia MIT, 89 archivos, sin prohibidos; CI `42939327054` verde en 1,72 min; badge `200 image/svg+xml` con estado `passing`. |
+| README | 15 secciones, 21 encabezados sin saltos, 3 enlaces relativos resueltos, 2 externos con 200, bloques con lenguaje y sin rutas absolutas. |
+| Tamaño y secretos | 1,34 MB rastreados; 674,6 KiB de objetos; solo marcadores de clave, sin credenciales. |
+
+- **Trazabilidad:** RF-1 a RF-42 y RNF-1 a RNF-14 cubiertos por los artefactos de T1–T10 y reverificados en T11; C-2, C-3, C-24 y C-25 cerrados; C-14 cerrado con la publicación real.
+- **Casos límite:** verificados el clon sin `.env`, el uso sin clave, `.env.example` copiado, `.env` ignorado, la primera ejecución, Docker sin red y el render del README. Declarados pendientes no bloqueantes el GIF (D6), la prueba manual con clave real (004/005) y el PR desde una bifurcación (C-27, sin segunda cuenta).
+- **Tropezo de Docker:** el rebuild reutilizó la caché hasta la capa del modelo, pero la redescarga se bloqueó más de 20 min y el motor dejó de responder; se abortó, se reinició Docker Desktop y se verificó con la imagen ya validada en T5. No se cambió la imagen base ni el modelo.
+- **Correcciones de T11:** el README declaraba que los tiempos se añadirían y no mostraba el estado real ni el pendiente del GIF; se añadieron esas tres notas. No se tocaron `app/`, `static/`, `tests/`, `requirements.txt` ni los esquemas.

@@ -16,7 +16,7 @@ Cada spec vive en `specs/<carpeta>/` con `spec.md`, `plan.md` y `tasks.md`. Por 
 | 004 | `004-api-http` | Exponer subida y chat por HTTP | 002, 003 | Implementada |
 | 005 | `005-interfaz-web` | Chat y subida en el navegador | 004 | Implementada |
 | 006 | `006-servidor-mcp` | Exponer búsqueda e indexado como herramientas MCP | 001, 002 | Implementada |
-| 007 | `007-publicacion-portafolio` | README, CI y demo | 001 a 006 | Pendiente |
+| 007 | `007-publicacion-portafolio` | README, CI y demo | 001 a 006 | Implementada |
 | Extra | `008a` a `008d` | Mejoras opcionales | según cada una | Opcional |
 
 ```text
@@ -98,6 +98,7 @@ La 006 solo necesita 001 y 002, así que puede hacerse antes o después de la AP
 
 ## 007 — Publicación y portafolio
 
+- **Estado:** Implementada (2026-11-10).
 - **Objetivo:** que cualquiera entienda y pruebe el proyecto en cinco minutos.
 - **Define:** README con diagrama de arquitectura, decisiones y cómo correrlo; capturas o un GIF de demo; CI con GitHub Actions que ejecute `ruff check .` y `pytest -q`; `.env.example` y notas de seguridad.
 - **Principios que más pesan:** 4 (el CI debe pasar solo con `requirements.txt`, sin claves ni descargas) y 5 (`.env` fuera del repo), .gitignore con todos los archivos que se deben omitir y no subir al repositorio.

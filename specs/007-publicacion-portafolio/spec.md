@@ -1,6 +1,6 @@
 # Spec 007 — Publicación y portafolio
 
-Estado: aprobada
+Estado: implementada
 
 ## Contexto y objetivo
 

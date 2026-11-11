@@ -4,6 +4,8 @@
 
 CodeMentor es un asistente RAG que indexa archivos de Python y responde preguntas sobre el código citando el archivo, el símbolo y el rango de líneas de donde sale cada dato. Está pensado para orientarse rápido en un repositorio sin leerlo entero: subes un archivo `.py`, preguntas dónde está una función o cómo se calcula algo y recibes una respuesta respaldada por fragmentos concretos. Si la respuesta no está en el código indexado, el bot debe decir que no la encontró en lugar de inventarla.
 
+**Estado (2026-11-10):** las specs 001 a 007 están implementadas y validadas. El GIF de demostración y la prueba manual del chat con una clave real siguen pendientes no bloqueantes, y el índice vive en memoria sin persistencia.
+
 ## Funcionalidades principales
 
 - **Subida e indexado:** acepta archivos `.py`, los trocea por función, clase y bloque de módulo, y aplica un plan B por ventanas si el archivo no se puede analizar.
@@ -139,6 +141,8 @@ El índice es propio de cada proceso: si buscas antes de indexar, verás el avis
 ## Demo
 
 Capturas tomadas de la aplicación en ejecución con `uvicorn app.main:app` en `http://localhost:8000`.
+
+El GIF animado de 10 a 20 segundos queda pendiente: no se grabó una respuesta con citas porque no había una clave válida disponible. En lugar de publicar una imagen falsa, se muestran estas dos capturas reales del flujo; el GIF se añadirá cuando se pueda grabar la respuesta completa.
 
 ### Indexado desde la interfaz web
 
@@ -286,7 +290,9 @@ pytest -q
 ruff check .
 ```
 
-`pytest -q` usa `TestClient` y dobles del cliente de Anthropic y del modelo de embeddings: no hace llamadas reales, no usa red y no descarga el modelo. La prueba opcional que necesita el modelo real se omite por defecto y solo se activa con `CODEMENTOR_REAL_MODEL=1`. `ruff check .` revisa el estilo del código. La instalación de dependencias con `pip install -r requirements.txt` sí puede usar la red. Los tiempos de la autoevaluación se añadirán cuando se midan en la verificación final.
+`pytest -q` usa `TestClient` y dobles del cliente de Anthropic y del modelo de embeddings: no hace llamadas reales, no usa red y no descarga el modelo. La prueba opcional que necesita el modelo real se omite por defecto y solo se activa con `CODEMENTOR_REAL_MODEL=1`. `ruff check .` revisa el estilo del código. La instalación de dependencias con `pip install -r requirements.txt` sí puede usar la red.
+
+Autoevaluación del 2026-11-10 en un clon limpio: `pytest -q` terminó en 13,29 s con 1.166 pruebas y 1 omitida, y `ruff check .` no reportó errores. Con las dependencias y el modelo ya disponibles, el arranque hasta `GET /health` tardó 23,8 s y la subida de `app/rag.py` 1,46 s (26,8 s en total, por debajo de los cinco minutos). La primera instalación de dependencias tardó 28,9 min y la primera carga del modelo en un proceso nuevo, 99,9 s; por eso el camino de cinco minutos no se promete para la primera instalación.
 
 ## Seguridad
 
