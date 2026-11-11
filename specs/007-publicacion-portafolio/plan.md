@@ -115,6 +115,7 @@ El ejemplo del README usa `python -m app.mcp_server` con el inspector oficial. E
 | `.github/workflows/ci.yml` | Ejecuta `ruff check .` y `pytest -q` en push y pull request, sin secretos ni modelo | No publica imágenes, no despliega, no ejecuta frontend ni `ruff format --check`, no oculta fallos |
 | `.env.example` | Enumera las variables con comentarios en español y valores vacíos o comentados | No contiene una clave válida ni activa la prueba real por defecto |
 | `.gitignore` | Excluye entornos, cachés, `.env`, auxiliares, `.vscode/`, `node_modules`, bases de datos y artefactos | No ignora `.env.example`, `docs/`, `specs/` ni el GIF |
+| `pytest.ini` | Añade la raíz del proyecto a `sys.path` para que `pytest -q` importe `app` en local y en CI | No cambia la suite, el workflow ni la configuración de Ruff |
 | `LICENSE` | Texto MIT estándar, año 2026 y titular María Camila | No usa marcadores de posición |
 | `Dockerfile` | Imagen local Python 3.12 con dependencias, modelo descargado en el build, usuario no root y arranque en `0.0.0.0:8000` | No copia `.env`, no recibe la clave en build, no publica en un registro, no usa `docker-compose` |
 | `.dockerignore` | Deja el contexto de build en `app/`, `static/` y `requirements.txt` | No excluye lo necesario para arrancar |
@@ -365,6 +366,7 @@ node_modules/
 docs/
 specs/
 tests/
+pytest.ini
 demo_sin_tokens.py
 diagnostico.py
 *.db
@@ -660,3 +662,13 @@ No se modificó ninguna prueba para obtener el verde.
 - No se creó ningún artefacto de T1–T11 ni se ejecutó `docker build`, `git init` ni ningún commit.
 - `spec.md` está en **aprobada**; `plan.md` y `tasks.md` quedan en **aprobado** y T0 marcada como hecha.
 - `AGENTS.md` y la constitución no contradicen este plan.
+
+## Incidencia de T10 — `pytest -q` y la raíz del proyecto
+
+La primera ejecución real del workflow (`42937794855`, push de `d77565d`) falló en el paso `pytest -q` con `ModuleNotFoundError: No module named 'app'`. La causa no era el runner: el ejecutable `pytest` no añade el directorio actual a `sys.path`, mientras que `python -m pytest` sí; `tests/conftest.py` importa `app` y el comando del contrato es literalmente `pytest -q` (RF-23, C-29).
+
+Se corrigió con un `pytest.ini` en la raíz que declara `pythonpath = .`, aprobado expresamente por el usuario el 2026-11-10. Se eligió configuración de pytest en vez de `python -m pytest -q` (habría exigido enmienda a RF-23/C-29), de `PYTHONPATH` en el workflow (no arreglaría el comando local del README) o de un `conftest.py` raíz (mismo efecto con código en vez de configuración). `pytest -q` pasa en local y en CI con este archivo; no se modificó `tests/` ni el workflow.
+
+- Commit de la corrección: `6867329` (`fix: make pytest resolve the project root`); ejecución `42938428625` verde.
+- Commit del badge: `e611fcb` (`docs: add repository URL and CI badge`); ejecución `42938750426` verde.
+- El workflow emite un aviso no bloqueante de GitHub sobre Node.js 20 en `actions/checkout@v4` y `actions/setup-python@v5`; no afecta al resultado y no se cambian las etiquetas fijadas del plan.

@@ -242,6 +242,7 @@ CodeMentor/
 ├── README.md                   # puerta de entrada al proyecto
 ├── requirements.txt            # dependencias fijadas
 ├── .env.example                # variables de entorno de ejemplo
+├── pytest.ini                  # configuración de pytest: raíz del proyecto en el path
 └── .gitignore                  # archivos excluidos del repositorio
 ```
 
@@ -249,7 +250,7 @@ CodeMentor/
 - **Pruebas:** `tests/`.
 - **Documentación:** `docs/` y `specs/`.
 - **Configuración de trabajo:** `.opencode/`, `.agents/`, `AGENTS.md`, `MEMORY.md` y `opencode.json`.
-- **Archivos raíz publicados:** `README.md`, `requirements.txt`, `.env.example` y `.gitignore`.
+- **Archivos raíz publicados:** `README.md`, `requirements.txt`, `.env.example`, `pytest.ini` y `.gitignore`.
 - **Artefactos de publicación:** `Dockerfile`, `.dockerignore`, `.github/workflows/ci.yml` y `LICENSE`.
 
 ## Stack

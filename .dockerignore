@@ -18,6 +18,7 @@ node_modules/
 docs/
 specs/
 tests/
+pytest.ini
 demo_sin_tokens.py
 diagnostico.py
 *.db
