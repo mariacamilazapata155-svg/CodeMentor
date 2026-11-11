@@ -303,5 +303,7 @@ ruff check .
 
 La licencia del proyecto es MIT. El texto completo está en [`LICENSE`](LICENSE).
 
-El workflow de CI está en `.github/workflows/ci.yml` y ejecuta exactamente `ruff check .` y `pytest -q` en cada push y pull request, sobre Python 3.12. El badge de estado se añadirá al publicar, con la URL real del repositorio; hasta entonces esta sección no muestra ningún badge ni una URL inventada.
+[![CI](https://github.com/mariacamilazapata155-svg/CodeMentor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mariacamilazapata155-svg/CodeMentor/actions/workflows/ci.yml)
+
+El workflow de CI está en `.github/workflows/ci.yml` y ejecuta exactamente `ruff check .` y `pytest -q` en cada push y pull request, sobre Python 3.12. El badge enlaza la rama `main` y la última ejecución real del workflow.
 
