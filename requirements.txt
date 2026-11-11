@@ -1,0 +1,17 @@
+fastapi==0.161.0
+starlette==1.9.0
+uvicorn==0.54.0
+pydantic==2.14.1
+python-dotenv==1.2.4
+
+sentence-transformers==6.2.0
+numpy==2.5.4
+
+anthropic==2.1.0
+mcp==2.3.0
+python-multipart==0.0.32
+
+pytest==9.1.1
+httpx==0.28.1
+httpx2==2.16.0
+ruff==0.17.2

@@ -1,0 +1,344 @@
+:root {
+  /* Color */
+  --color-bg: #f7f7f8;
+  --color-surface: #ffffff;
+  --color-text: #1f2328;
+  --color-text-muted: #59636e;
+  --color-border: #d1d9e0;
+  --color-border-strong: #6e7781;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-success: #1a7f37;
+  --color-danger: #cf222e;
+
+  /* Espaciado */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+
+  /* Tipografía */
+  --font-family-base: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-family-mono: "Cascadia Code", "Consolas", monospace;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --line-height-tight: 1.25;
+  --line-height-base: 1.6;
+
+  /* Bordes y sombras */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --shadow-md: 0 2px 8px rgb(31 35 40 / 10%);
+
+  /* Layout */
+  --content-max: 72rem;
+  --panel-width: 22rem;
+
+  /* Interacción y foco */
+  --size-touch: 2.75rem;
+  --border-width: 1px;
+  --focus-width: 2px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+[hidden] {
+  display: none;
+}
+
+/* Cabecera de la página. */
+.header {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+}
+
+.header__title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+.header__subtitle {
+  margin: var(--space-sm) 0 0;
+  color: var(--color-text-muted);
+}
+
+/* Layout base de una columna: el orden del DOM manda (RNF-4). */
+.main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md) var(--space-xl);
+}
+
+/* Paneles de subida y conversación. */
+.panel {
+  min-width: 0;
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.panel__title {
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+/* Campos de los formularios. */
+.field__label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.field__input {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--size-touch);
+  padding: var(--space-sm);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+.field__input--area {
+  min-height: var(--size-touch);
+  resize: vertical;
+}
+
+.field__help {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+input[type="file"].field__input {
+  min-height: var(--size-touch);
+  padding: var(--space-xs);
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  min-height: var(--size-touch);
+  margin-right: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-surface);
+  background-color: var(--color-primary);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+.button {
+  min-height: var(--size-touch);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-surface);
+  background-color: var(--color-primary);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  background-color: var(--color-text-muted);
+  border-color: var(--color-text-muted);
+}
+
+/* Avisos: la zona de subida conserva su estado hasta la siguiente subida. */
+.notice {
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.notice:empty {
+  display: none;
+}
+
+.notice--error {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.notice--success {
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+/* Conversación. */
+.chat__empty {
+  margin: 0 0 var(--space-md);
+  color: var(--color-text-muted);
+}
+
+.chat__log {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0 0 var(--space-lg);
+  padding: 0;
+  list-style: none;
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.message--user {
+  background-color: var(--color-bg);
+}
+
+.message--assistant {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+}
+
+.message--notice,
+.message--state,
+.message--status {
+  background-color: var(--color-bg);
+  border-color: var(--color-border-strong);
+}
+
+.message--error {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.message__role {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.message__text {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.message__title {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.message__action {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  color: var(--color-primary);
+}
+
+/* Citas: solo lectura, nunca enfocables. */
+.citations {
+  display: grid;
+  gap: var(--space-xs);
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.citation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-xs) var(--space-sm);
+  padding: var(--space-sm);
+  background-color: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+}
+
+.citation__number {
+  grid-column: 1;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+}
+
+.citation__path,
+.citation__symbol,
+.citation__lines {
+  grid-column: 2;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Foco visible en todos los enfocables (RNF-3, 2.4.7). */
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-primary);
+  outline-offset: var(--space-xs);
+}
+
+/* La acción de `empty_index` enfoca la sección de subida también con ratón. */
+.panel:focus {
+  outline: var(--focus-width) solid var(--color-primary);
+  outline-offset: var(--space-xs);
+}
+
+/* Dos columnas desde 60rem: subida a la izquierda y chat a la derecha (RNF-4).
+  La condición de media es la única longitud literal fuera de `:root`, porque
+  CSS no admite `var()` en una condición. El orden del DOM no cambia. */
+@media (min-width: 60rem) {
+  .main {
+    grid-template-columns: var(--panel-width) minmax(0, 1fr);
+    align-items: start;
+  }
+}

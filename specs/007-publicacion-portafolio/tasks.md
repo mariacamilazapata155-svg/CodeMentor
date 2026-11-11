@@ -1,0 +1,116 @@
+# Tareas 007 — Publicación y portafolio
+
+Estado: aprobado
+
+
+Orden de dependencia. Una tarea a la vez: se prepara el artefacto, se verifica y se para. Cada tarea cabe en 20–30 minutos; T3 puede llegar a 40 por el volumen de secciones del README, y T5, T7 y T11 pueden llegar a 45 porque incluyen build, grabación o la verificación integral. Son 12 tareas (T0–T11): T0 no produce artefactos, T1–T10 preparan y publican, y T11 cierra la spec.
+
+Esta spec no cambia el producto: no se tocan `app/`, `static/`, `tests/`, los esquemas de `models.py` ni `requirements.txt`. No se añaden pruebas nuevas ni dependencias de Python; la suite existente (`pytest -q`) y `ruff check .` siguen siendo la única validación automática. Las herramientas externas (git, Docker, `ffmpeg`, `curl`) no se declaran en el proyecto.
+
+El GIF y la prueba manual con clave real son pendientes no bloqueantes según D6: si no hay clave o herramienta de conversión, se documenta el pendiente, no se crea un archivo falso y la spec no se declara bloqueada. La publicación efectiva en GitHub requiere credenciales del usuario; si no están, T10 queda pendiente y la spec no se marca implementada (C-14).
+
+## Antes de empezar
+- [x] **T0. Resolver las aprobaciones, confirmar la base y los supuestos, y aprobar spec, plan y tareas.** RF-32, RNF-1, RNF-5, RNF-13, C-25
+  - Registrar por escrito las aprobaciones 1 a 7 del plan: archivos nuevos (`LICENSE`, `Dockerfile`, `.dockerignore`, `.github/workflows/ci.yml`, `docs/demo.gif` solo si existe), archivos existentes que se modifican (`README.md`, `.env.example`, `.gitignore`, `MEMORY.md`, `docs/constitution.md`, `docs/roadmap.md` y el estado de `specs/007-publicacion-portafolio/`), ausencia de cambios de producto, ausencia de dependencias nuevas, corrección tipográfica de la «v» de `docs/constitution.md:13`, publicación con la cuenta del usuario y parada si falla un supuesto.
+  - Confirmar la base en verde con `ruff check .` y `pytest -q`; anotar el resultado real (el último registro es 1166 passed, 1 skipped).
+  - Confirmar los supuestos 1 a 8 del plan: Docker disponible; red para el build; `python:3.12-slim` con etiqueta concreta; descarga del modelo en `HF_HOME` y carga posterior sin red; `uvicorn` en `0.0.0.0:8000`; `actions/checkout@v4`, `actions/setup-python@v5` y `ubuntu-24.04`; URL del badge; clave y `ffmpeg` para el GIF o su pendiente documentado.
+  - Confirmar que no se toca `app/`, `static/`, `tests/`, `requirements.txt` ni los esquemas, y que no se inventa usuario, URL ni badge.
+  - Anotar el resultado en `## Resoluciones de T0` de `plan.md`; si un supuesto falla, corregir el plan o parar y preguntar antes de T1.
+  - Hecho cuando: las aprobaciones 1 a 7 están resueltas por escrito, la base está en verde, los supuestos están confirmados o el plan corregido, `spec.md` está en **aprobada**, `plan.md` y `tasks.md` quedan aprobados y `AGENTS.md` no contradice el plan ni la constitución.
+
+## Tareas
+
+- [x] **T1. Completar `.gitignore` y `.env.example`, y verificar los ignorados y la configuración sin clave.** RF-24, RF-25, RF-26, RF-27, RNF-9
+  - Escribir `.gitignore` con las categorías de RF-26: entornos virtuales (`venv/`, `.venv/`, `env/`), `__pycache__/` y compilados, `.pytest_cache/`, `.ruff_cache/`, cobertura y construcción, `.env` y variantes locales conservando `.env.example`, `.vscode/`, `demo_sin_tokens.py`, `diagnostico.py`, artefactos de sistema operativo y editores, registros, `node_modules/` y bases de datos locales (`*.db`, `*.sqlite`, `*.sqlite3`).
+  - Escribir `.env.example` con `ANTHROPIC_API_KEY=` vacía y un comentario en español por variable; añadir `CODEMENTOR_REAL_MODEL` comentada, con la explicación de que activa la prueba opcional y que no debe activarse por accidente.
+  - Crear archivos y carpetas temporales de prueba y comprobar con `git check-ignore -v` que se ignoran; comprobar que **no** se ignoran `.env.example`, `README.md`, `docs/`, `specs/`, `.opencode/agents/` ni `.agents/skills/`. Borrar las pruebas al terminar.
+  - Copiar `.env.example` a `.env` en local y confirmar que el arranque y el comportamiento sin clave son los documentados; borrar `.env` después.
+  - Hecho cuando: `git check-ignore` cubre todas las categorías de RF-26, `.env.example` enumera solo variables reales con valores no válidos como credenciales, copiarlo produce una configuración válida y no queda ningún archivo temporal de prueba.
+
+- [x] **T2. Escribir la primera mitad del README: identidad, estado, diagrama, requisitos e inicio rápido.** RF-1, RF-2, RF-3, RF-4, RF-10, RF-29, RF-30, RF-35, RNF-6, RNF-7, RNF-11, RNF-12
+  - Sustituir el README mínimo por las secciones 1 a 5 del plan, en este orden: qué es y qué problema resuelve (máximo tres frases), funcionalidades principales, diagrama de arquitectura, requisitos previos e inicio rápido. Incluir la nota de estado real: specs 001–006 implementadas, 007 en publicación, prueba manual con clave real y GIF como pendientes si no se completaron, índice sin persistencia.
+  - Insertar el diagrama Mermaid exacto del plan, con las capas reales y la vía MCP por `rag.py` sin pasar por HTTP.
+  - Escribir el inicio rápido con los comandos del plan: clonar, crear y activar el entorno en Windows y Linux/macOS, instalar `requirements.txt`, copiar `.env.example` a `.env`, arrancar con `uvicorn app.main:app` y comprobar `GET /health`; no superar diez comandos efectivos ni suponer pasos no escritos. Usar la carpeta local y una nota de pendiente mientras no exista la URL real; no inventar `<usuario>`.
+  - Explicar antes de que el lector lo encuentre qué funciona sin clave (salud, subida, contenedor y MCP) y qué requiere clave (chat), con el mensaje literal de `missing_api_key` y la advertencia de la primera descarga y el calentamiento.
+  - Incluir la variante `curl.exe` para PowerShell y los tiempos reales medidos en T11 cuando existan; si aún no se midieron, dejar la advertencia sin cifras inventadas.
+  - Hecho cuando: las cinco secciones existen en el orden de RF-1, el diagrama coincide con la implementación, el inicio rápido no supera diez comandos y funciona en un clon limpio, cada comando y ruta citada existe, y la sección de estado no presenta el proyecto como terminado ni en producción.
+
+- [x] **T3. Escribir la segunda mitad del README: ejemplos, decisiones, estructura, stack, límites, pruebas, seguridad y licencia.** RF-5, RF-6, RF-7, RF-8, RF-9, RF-10, RF-28, RF-31, RF-35, RNF-6, RNF-7, RNF-9, RNF-10, RNF-11, RNF-12
+  - Escribir los ejemplos de uso del plan con archivos que existen: API con `curl` (`/health`, `/upload` de `app/rag.py`, `/upload` de `README.md` para el error de extensión y `/chat` con `history` opcional), interfaz web y MCP con el inspector; incluir el resultado esperado de cada uno y no documentar rutas ni métodos que no existan.
+  - Documentar al menos seis decisiones de diseño con decisión, motivo y alternativa descartada: capas con MCP consumiendo `rag.py`, troceado con `ast` y plan B, embeddings normalizados y similitud coseno, citas construidas desde la búsqueda, índice en memoria y carga diferida del modelo.
+  - Escribir la estructura real, distinguiendo producto, pruebas, documentación, configuración de trabajo, archivos raíz publicados y artefactos; no listar `demo_sin_tokens.py`, `diagnostico.py`, `.vscode/`, `venv/`, cachés ni `node_modules`. Declarar el stack con las versiones fijadas y el enlace oficial del modelo, sin dependencias ni versiones que no estén en `requirements.txt`.
+  - Enumerar los límites de RF-9 con su consecuencia práctica y las notas de seguridad de RF-28: clave solo en `ANTHROPIC_API_KEY`, `.env` ignorado, `Dockerfile` sin clave, código nunca ejecutado, ausencia de persistencia salvo el temporal efímero, datos enviados a Claude, índice en memoria y falta de autenticación y TLS. Explicar la configuración de la clave con el marcador `...` y la distinción entre «pruebas sin red» e «instalación con red».
+  - Añadir la sección de pruebas y lint con `pytest -q` y `ruff check .`, qué se mockea y que la suite no descarga el modelo; dejar la sección de licencia enlazando a `LICENSE` y el estado del CI sin badge inventado hasta T10.
+  - Hecho cuando: los ejemplos se ejecutan y devuelven lo declarado, hay al menos seis decisiones con motivo y alternativa, la estructura y el stack coinciden con el repositorio real, cada límite y nota de seguridad es exacto, no hay rutas absolutas ni enlaces a archivos excluidos, y el README no promete funciones futuras como disponibles.
+
+- [x] **T4. Crear el `Dockerfile` y el `.dockerignore` con el contenido del plan.** RF-38, RF-40, RNF-5, RNF-9, RNF-13
+  - Crear `Dockerfile` con `python:3.12-slim`, `PYTHONDONTWRITEBYTECODE`, `PYTHONUNBUFFERED`, `PIP_NO_CACHE_DIR` y `HF_HOME=/opt/models`; instalar `requirements.txt`, copiar solo `app/` y `static/`, descargar el modelo en el build, crear `appuser` con UID 10001, ajustar propietarios, cambiar a `USER appuser`, exponer 8000 y arrancar con `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
+  - No incluir `ARG` ni `ENV ANTHROPIC_API_KEY`, ni `COPY .env`, ni `COPY .`, ni `HEALTHCHECK`, ni `docker-compose`, ni pasos de publicación en un registro.
+  - Crear `.dockerignore` con la lista fija del plan; conservar `app/`, `static/` y `requirements.txt`; excluir `.env` y variantes, entornos, cachés, `.git/`, `.github/`, `.vscode/`, `.opencode/`, `.agents/`, `node_modules/`, `docs/`, `specs/`, `tests/`, auxiliares, bases de datos, logs, GIF, README, `AGENTS.md`, `MEMORY.md`, `opencode.json`, `LICENSE`, `Dockerfile` y `.dockerignore`.
+  - Revisar que no haya secretos, rutas absolutas ni instrucciones que ejecuten el código subido.
+  - Hecho cuando: el `Dockerfile` y el `.dockerignore` coinciden con el plan, el contexto de build solo contiene lo necesario para runtime, no hay clave ni `.env` en ninguna instrucción y no se añade `docker-compose` ni publicación en registro.
+
+- [x] **T5. Construir y verificar la imagen, y completar la sección Docker del README con el tamaño real.** RF-38, RF-39, RF-40, RF-41, RF-42, RNF-5, RNF-7, RNF-9, RNF-13
+  - Construir con `docker build -t codementor:local .` con red; medir el tamaño real con `docker image inspect --format "{{.Size}}"` y convertirlo a MiB. Confirmar que el modelo se descargó en el build y quedó en `/opt/models`.
+  - Ejecutar sin clave con `-p 8000:8000`: comprobar `/health`, la subida de `app/rag.py`, el frontend y el chat con el `503 missing_api_key`. Si hay una clave real disponible, ejecutar con `-e ANTHROPIC_API_KEY=...` sustituyendo el marcador solo en la terminal y probar el chat sin escribir la clave en ningún archivo; si no la hay, dejar el chat con clave como pendiente heredado.
+  - Ejecutar con `--network none` y confirmar que `/health` y una subida funcionan sin descargar el modelo en runtime; si falla, corregir `HF_HOME` o los permisos y repetir, sin eliminar la prueba.
+  - Inspeccionar el contenido con `--entrypoint sh` y comprobar que no existen `/app/docs`, `/app/specs`, `/app/tests`, `/app/.env` ni `/app/.git`; comprobar que `appuser` puede leer el modelo. Repetir el build del mismo commit y confirmar que la segunda imagen arranca y responde de forma funcionalmente equivalente, no necesariamente idéntica byte a byte.
+  - Añadir al README la sección de Docker con build, ejecución, tamaño real medido, clave en runtime, comportamiento sin clave, build con red, runtime sin descarga y límites; no incluir `docker compose`, `docker push` ni una clave real.
+  - Hecho cuando: la imagen se construye, arranca y responde; el tamaño real está documentado; sin clave se cumple el comportamiento de las specs 004–006; `--network none` funciona; la imagen no contiene `.env`, código del usuario ni artefactos; y la segunda construcción es funcionalmente equivalente.
+
+- [x] **T6. Crear el workflow de integración continua y validar su contrato.** RF-15, RF-16, RF-17, RF-18, RF-19, RF-20, RF-21, RF-22, RF-23, RNF-3, RNF-4, RNF-5, RNF-10, RNF-11
+  - Crear `.github/workflows/ci.yml` con nombre `CI`, trabajo `checks`, `on: push` y `on: pull_request`, `permissions: contents: read`, `runs-on: ubuntu-24.04`, `timeout-minutes: 15`, `actions/checkout@v4` y `actions/setup-python@v5` con Python `"3.12"`.
+  - Instalar solo `python -m pip install -r requirements.txt`; ejecutar exactamente `ruff check .` y `pytest -q`. No usar `ruff format --check`, frontend, `-k`, `--ignore`, `|| true`, `continue-on-error`, caché, reintentos ni secretos.
+  - Confirmar que `CODEMENTOR_REAL_MODEL` no se define y que la prueba opcional de `tests/test_rag.py:388-389` queda omitida por su propio `skipif`; documentar que esa omisión declarada no cuenta como exclusión.
+  - Validar la sintaxis del YAML con una herramienta disponible o con la validación de GitHub; revisar que las acciones y la imagen base no usan `latest` ni `main`.
+  - Hecho cuando: el workflow coincide con el contrato del plan, el YAML es válido, solo ejecuta los dos comandos, no oculta fallos, no usa secretos ni caché, tiene permisos de solo lectura y la omisión de la prueba opcional está justificada.
+
+- [x] **T7. Grabar el GIF de demostración o documentar el pendiente sin publicar una imagen falsa.** RF-11, RF-12, RF-13, RF-14, RNF-8, RNF-12
+  - Si hay clave y herramienta de conversión: arrancar el servidor con el modelo en caché, abrir una ventana limpia de 1280×800 al 100 %, subir `app/rag.py` con ruta `app/rag.py`, hacer la pregunta «¿Dónde se calculan los embeddings?» y esperar la respuesta con citas visibles. Grabar con `chrome-devtools` o una grabadora local y recortar a 10–20 s.
+  - Convertir a `docs/demo.gif` con `ffmpeg` y el filtro del plan; comprobar duración con `ffprobe`, peso ≤5 MB, reproducción completa y ausencia de claves, tokens, nombres de usuario de la máquina, rutas absolutas y código ajeno. Revisar fotograma a fotograma.
+  - Añadir al README la sección Demo con la ruta relativa `docs/demo.gif` y el texto alternativo en español del plan; no añadir capturas estáticas.
+  - Si no hay clave o `ffmpeg`: no crear un GIF falso, no enlazar un archivo inexistente y declarar el pendiente en el README y en `plan.md`/`tasks.md`; registrar la causa.
+  - Hecho cuando: existe un GIF real de 10–20 s, ≤5 MB, con subida, pregunta y citas, texto alternativo y sin datos sensibles; o el pendiente está documentado y el README no enlaza ningún archivo que no exista.
+  - **Resultado (2026-11-10): pendiente documentado, sin GIF.** `ffmpeg` 8.1 está disponible, pero no hay `ANTHROPIC_API_KEY` en el entorno de esta sesión y `.env` no se leyó ni se copió por seguridad; sin clave, el chat devuelve `503 missing_api_key` y una grabación no mostraría la respuesta con citas (RF-11 a RF-14). No se creó `docs/demo.gif`, no se añadieron capturas estáticas y la sección Demo del README declara el pendiente sin enlazar ninguna imagen. Se resolverá cuando haya una clave real disponible; no bloquea el cierre según D6.
+
+- [x] **T8. Añadir la licencia MIT y corregir la constitución y `MEMORY.md` antes de publicar.** RF-34, RF-37, RNF-6, RNF-9, C-15, C-17, C-30
+  - Crear `LICENSE` con el texto MIT estándar, año **2026** y titular **María Camila**, sin marcadores de posición.
+  - Corregir solo la «v» suelta al final de `docs/constitution.md:13`; no cambiar ningún principio ni regla.
+  - Actualizar `MEMORY.md` para que la frase sobre la prueba manual de 004/005 coincida con `docs/roadmap.md`: 004 y 005 están implementadas y la prueba manual es un pendiente heredado no bloqueante. Añadir el estado real de la 007 sin secretos ni datos personales innecesarios, y mantenerlo en ~50 líneas.
+  - Declarar la licencia MIT en el README y enlazar a `LICENSE`; no repetir el nombre de la titular en el README.
+  - Hecho cuando: `LICENSE` es MIT con año y titular correctos; `docs/constitution.md` solo cambia la «v»; `MEMORY.md` no contradice `docs/roadmap.md`, no tiene secretos y conserva el estado de las specs; y el README declara la licencia.
+
+- [ ] **T9. Inicializar el repositorio, revisar secretos, ignorados y archivos rastreados, y hacer el primer commit.** RF-25, RF-26, RF-27, RF-32, RF-33, RF-36, RF-37, RNF-8, RNF-9
+  - Ejecutar `git init -b main` si no existe el repositorio; comprobar que `.gitignore` está activo antes del primer commit.
+  - Ejecutar `git add -A` y revisar `git status --short`, `git diff --cached --stat` y `git ls-files`: no deben aparecer `.env`, `venv/`, `__pycache__/`, `.pytest_cache/`, `.ruff_cache/`, `.vscode/`, `demo_sin_tokens.py`, `diagnostico.py`, `node_modules/`, bases de datos ni logs; sí deben aparecer `.env.example`, `README.md`, `docs/`, `specs/`, `.opencode/agents/`, `.agents/skills/`, `Dockerfile`, `.dockerignore`, `LICENSE` y el GIF si existe.
+  - Buscar secretos y rutas locales con los patrones del plan (`sk-ant-`, `ghp_`, `github_pat_`, `AKIA`, claves privadas, `ANTHROPIC_API_KEY=.+`, `C:\Users\`, `/home/...`, `/Users/...`) en el índice y en `opencode.json`, `AGENTS.md`, `MEMORY.md`, `docs/`, `specs/`, `.opencode/` y `.agents/`. Revisar a mano las coincidencias; retirar y rotar cualquier credencial real.
+  - Comprobar que `.opencode/.gitignore` mantiene fuera `node_modules`, `package.json`, `package-lock.json` y `.gitignore`; no usar `git add -f` sobre `.opencode/`. Medir el tamaño del repositorio sin `venv/` (≤25 MB) y del GIF (≤5 MB).
+  - Crear el primer commit `chore: prepare public portfolio release` solo si todas las comprobaciones pasan; no reescribir historial ni hacer `push --force`.
+  - Hecho cuando: el repositorio está en `main`, `.gitignore` funciona antes del commit, el índice no contiene secretos ni archivos prohibidos, los archivos permitidos están rastreados, el tamaño cumple y existe un primer commit limpio.
+
+- [ ] **T10. Publicar en GitHub, ejecutar el CI real y añadir la URL y el badge con el valor real.** RF-15, RF-16, RF-17, RF-18, RF-19, RF-20, RF-21, RF-22, RF-23, RF-33, RF-34, RF-37, RNF-14, C-14, C-15, C-27
+  - Crear el repositorio público `codementor` en la cuenta personal, sin README, licencia ni `.gitignore` automáticos; añadir el remoto real y hacer `git push -u origin main`.
+  - Esperar a que el workflow `CI` termine en verde en el push. Si falla, corregir la causa y volver a ejecutar; no usar `continue-on-error`, no ocultar el fallo y no añadir el badge en verde. Si hay una segunda cuenta disponible, abrir un pull request desde una bifurcación y comprobar que se ejecuta sin secretos; si no, revisar la configuración y anotar la limitación.
+  - Añadir al README la URL real de clon y el badge del plan con la rama `main` y el workflow `ci.yml`; verificar con `curl -I` que responde 200 y `image/svg+xml`, y que el SVG refleja la última ejecución verde.
+  - Confirmar en el repositorio remoto que están publicados los archivos de RF-33 y RF-37 (incluidos `opencode.json`, `AGENTS.md`, `MEMORY.md`, `docs/`, `specs/`, `.opencode/` y `.agents/`, sin `node_modules`) y que no están `.env`, `venv/`, cachés, bases de datos, `demo_sin_tokens.py`, `diagnostico.py` ni `.vscode/`.
+  - Si no hay credenciales de GitHub: detenerse antes del remoto, dejar el repositorio local listo, documentar la publicación como pendiente en `plan.md`/`tasks.md` y no marcar la spec como implementada.
+  - Hecho cuando: el repositorio público existe con nombre `codementor` y rama `main`, el CI está en verde en el push (y en el pull request si se pudo probar), el README usa la URL real y el badge real, no hay archivos prohibidos y no se inventó ningún dato. Si faltan credenciales, el pendiente está documentado y C-14 sigue abierto.
+
+- [ ] **T11. Verificación final, autoevaluación guiada y actualización de estados.** RF-1–RF-42, RNF-1–RNF-14, C-2, C-3, C-24, C-25
+  - Ejecutar `ruff check .` y `pytest -q` con las versiones fijadas; confirmar que la suite pasa sin red, sin clave y sin descargar el modelo.
+  - Recorrer la matriz de trazabilidad del plan fila a fila: cada RF, RNF y criterio tiene su artefacto o su comprobación manual declarada. Recorrer los casos límite de la spec y anotar el resultado.
+  - Hacer la autoevaluación guiada en un clon limpio con cronómetro y la checklist del plan: instalar, copiar `.env.example`, arrancar, comprobar `/health`, subir `app/rag.py`, probar sin clave, añadir una clave real si existe, medir el camino de cinco minutos con dependencias y modelo disponibles y repetir con Docker. Anotar tropiezos, tiempos reales y correcciones, y actualizar el README con esos tiempos.
+  - Revisar a mano el render del README (encabezados, enlaces relativos, bloques con lenguaje, GIF y texto alternativo), la sección de seguridad, el estado real de 001–006, la ausencia de rutas absolutas y la coherencia con `docs/roadmap.md`; comprobar el estado real del CI y del badge.
+  - Actualizar `docs/roadmap.md` y los estados de `spec.md`, `plan.md` y `tasks.md` a **implementada** solo si C-14 se cumple y la publicación está hecha; si la publicación o el GIF quedan pendientes, dejar el estado real y registrar el pendiente. Actualizar `MEMORY.md` con el cierre y las decisiones de publicación.
+  - Hecho cuando: `ruff check .` y `pytest -q` están en verde, la trazabilidad y los casos límite están cubiertos, la autoevaluación tiene tiempos y tropiezos registrados, el README se renderiza sin enlaces rotos, el estado publicado coincide con lo documentado, y los estados de la spec, el plan, las tareas, el roadmap y `MEMORY.md` reflejan la realidad (implementada solo con C-14 cerrado).
+
+## Fuera de estas tareas
+- Cambiar el comportamiento, el contrato o los límites de las specs 001 a 006.
+- Añadir funcionalidades, rutas, herramientas MCP o modos de uso al producto.
+- Persistencia del índice, soporte de JavaScript, importación de repositorios o evaluación de calidad del RAG (008a–008d).
+- `docker-compose`, publicación de la imagen en un registro, despliegue en producción, dominio, HTTPS, autenticación o proxy inverso.
+- Publicar en PyPI, GitHub Pages u otro canal distinto del repositorio de GitHub.
+- README en inglés, blog, vídeo narrado o presentación comercial.
+- Analizadores de secretos, dependencias o calidad distintos de `ruff` y `pytest` sin una enmienda a la spec.
+- Reescribir el historial de git, cambiar la licencia o publicar `demo_sin_tokens.py`, `diagnostico.py` o `.vscode/`.
+- Resolver la prueba manual con clave real de las specs 004 y 005; queda como pendiente heredado no bloqueante.

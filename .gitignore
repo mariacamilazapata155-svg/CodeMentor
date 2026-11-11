@@ -1,0 +1,47 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Cachés de Python y compilados
+__pycache__/
+*.py[cod]
+
+# Cachés de pruebas y lint
+.pytest_cache/
+.ruff_cache/
+
+# Cobertura y construcción
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Configuración local y secretos (se conserva .env.example)
+.env
+.env.*
+!.env.example
+
+# Configuración de editores y archivos auxiliares
+.vscode/
+.idea/
+demo_sin_tokens.py
+diagnostico.py
+
+# Artefactos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Registros
+*.log
+logs/
+
+# Dependencias locales de herramientas
+node_modules/
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3

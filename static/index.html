@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CodeMentor</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="header__title">CodeMentor</h1>
+      <p class="header__subtitle">
+        Pregunta por tu código y obtén respuestas con citas.
+      </p>
+    </header>
+
+    <main class="main">
+      <noscript>
+        <p class="notice notice--error">
+          Esta interfaz necesita JavaScript para funcionar. Actívalo en el
+          navegador y vuelve a cargar la página.
+        </p>
+      </noscript>
+
+      <section
+        class="panel panel--upload"
+        id="subida"
+        tabindex="-1"
+        aria-labelledby="subida-title"
+      >
+        <h2 class="panel__title" id="subida-title">Subir código</h2>
+        <form class="form" id="upload-form" novalidate>
+          <label class="field__label" for="upload-file">
+            Archivo de Python (.py)
+          </label>
+          <input
+            class="field__input"
+            id="upload-file"
+            name="file"
+            type="file"
+            accept=".py"
+            aria-describedby="upload-help upload-status"
+          />
+
+          <label class="field__label" for="upload-path">
+            Ruta en el proyecto (opcional)
+          </label>
+          <input
+            class="field__input"
+            id="upload-path"
+            name="path"
+            type="text"
+            autocomplete="off"
+            aria-describedby="upload-help upload-status"
+          />
+
+          <p class="field__help" id="upload-help">
+            Si dejas la ruta vacía, se usa el nombre del archivo.
+          </p>
+
+          <button class="button button--primary" id="upload-submit" type="submit">
+            Indexar archivo
+          </button>
+
+          <div
+            class="notice"
+            id="upload-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></div>
+        </form>
+      </section>
+
+      <section class="panel panel--chat" aria-labelledby="chat-title">
+        <h2 class="panel__title" id="chat-title">Conversación</h2>
+
+        <p class="chat__empty" id="chat-placeholder">
+          Sube un archivo .py y escribe una pregunta para consultar tu código.
+        </p>
+
+        <ol
+          class="chat__log"
+          id="chat-log"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+          aria-label="Conversación"
+        ></ol>
+
+        <form class="form" id="chat-form" novalidate>
+          <label class="field__label" for="chat-question">Tu pregunta</label>
+          <textarea
+            class="field__input field__input--area"
+            id="chat-question"
+            name="message"
+            rows="3"
+            aria-describedby="chat-help"
+          ></textarea>
+
+          <p class="field__help" id="chat-help">
+            Pulsa Enter para enviar. Usa Shift+Enter para añadir una línea.
+          </p>
+
+          <button class="button button--primary" id="chat-submit" type="submit">
+            Preguntar
+          </button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
